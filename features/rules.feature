@@ -1,4 +1,3 @@
-@ignore
 Feature: Rules
   Scenario: Test that the default rule returns a true match
     Given the rule is a default rule

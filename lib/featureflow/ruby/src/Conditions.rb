@@ -61,22 +61,3 @@ class Conditions
     end
   end
 end
-
-# const operators = {
-
-#     before: (a, b) => {
-#     return a < b;
-# },
-#     after: (a, b) => {
-#     return a > b;
-# }
-# };
-#
-# const notFound = () => {
-#     return false;
-# };
-#
-# export function test(op, a, b){
-#   b = ['in','notIn'].indexOf(op) >= 0 ? b : b[0];
-#   return (operators[op] || notFound)(a, b);
-# }
