@@ -1,62 +1,34 @@
-
-def equals(a, b)
-  a.eql? b
-end
-
-def contains(a, b)
-  a.include? b
-end
-
-def startsWith(a, b)
-  a.start_with? b
-end
-
-def endsWith(a, b)
-  a.end_with? b
-end
-
-def matches(a, b)
-  a.match? Regexp.new(b)
-end
-
-def in(a, b)
-  b.include? a
-end
-
-def notIn(a, b)
-  not b.include? a
-end
-
-def greaterThan(a, b)
-  a > b
-end
-
-def greaterThanOrEqual(a, b)
-  a >= b
-end
-
-def lessThan(a, b)
-  a < b
-end
-
-def lessThanOrEqual(a, b)
-  a <= b
-end
-
-def before(a, b)
-  a < b
-end
-
-def after(a, b)
-  a > b
-end
-
 class Conditions
   def self.test(op, a, b)
     b = b[0] unless %w(in notIn).include? op
-    begin
-      send(op, a, b)
-    rescue
+    case op
+    when 'equals'
+      a.eql? b
+    when 'contains'
+      a.include? b
+    when 'startsWith'
+      a.start_with? b
+    when 'endsWith'
+      a.end_with? b
+    when 'matches'
+      a.match? Regexp.new(b)
+    when 'in'
+      b.include? a
+    when 'notIn'
+      not b.include? a
+    when 'greaterThan'
+      a > b
+    when 'greaterThanOrEqual'
+      a >= b
+    when 'lessThan'
+      a < b
+    when 'lessThanOrEqual'
+      a <= b
+    when 'before'
+      a < b
+    when 'after'
+      a > b
+    else
       false
     end
   end
