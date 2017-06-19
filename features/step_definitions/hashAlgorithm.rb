@@ -7,8 +7,8 @@ Given(/^the salt is "([^"]*)", the feature is "([^"]*)" and the key is "([^"]*)"
 end
 
 When(/^the variant value is calculated$/) do
-  @hash = EvaluateHelpers.calculateHash(@salt, @feature, @key);
-  @result = EvaluateHelpers.getVariantValue(@hash);
+  @hash = EvaluateHelpers.calculate_hash(@salt, @feature, @key);
+  @result = EvaluateHelpers.get_variant_value(@hash);
 end
 
 Then(/^the hash value calculated should equal "([^"]*)"$/) do |hash|

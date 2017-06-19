@@ -1,13 +1,13 @@
-require_relative './Conditions'
+require_relative 'Conditions'
 require 'digest/sha1'
 
 
 class EvaluateHelpers
-  def self.ruleMatches(rule, context)
-    if rule["defaultRule"]
+  def self.rule_matches(rule, context)
+    if rule['defaultRule']
       true # the default rule will always match true
     else
-      rule["audience"]["conditions"].each do |condition|
+      rule['audience']['conditions'].each do |condition|
         test_result = false
         context_values = context['values'][condition['target']]
 
@@ -23,7 +23,7 @@ class EvaluateHelpers
     end
   end
 
-  def self.getVariantSplitKey(variant_splits, variant_value)
+  def self.get_variant_split_key(variant_splits, variant_value)
     percent = 0
     variant_splits.each do |variant_split|
       percent += variant_split['split']
@@ -32,11 +32,11 @@ class EvaluateHelpers
 
   end
 
-  def self.calculateHash(salt = '1', feature = 'feature', key = 'anonymous')
+  def self.calculate_hash(salt = '1', feature = 'feature', key = 'anonymous')
     (Digest::SHA1.hexdigest [salt, feature, key].join(':'))[0..14];
   end
 
-  def self.getVariantValue(hash)
+  def self.get_variant_value(hash)
     Integer(hash, 16) % 100 + 1
   end
 end
