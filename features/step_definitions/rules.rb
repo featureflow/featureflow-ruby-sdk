@@ -61,7 +61,10 @@ Given(/^the variant splits are$/) do |splits|
 end
 
 When(/^the variant split key is calculated$/) do
-  @result = Featureflow::EvaluateHelpers.get_variant_split_key(@rule['variantSplits'], @variant_value)
+  @result = Featureflow::EvaluateHelpers.get_variant_split_key(
+      @rule['variantSplits'],
+      @variant_value
+  )
 end
 
 Then(/^the resulting variant should be "([^']*)"$/) do |result|

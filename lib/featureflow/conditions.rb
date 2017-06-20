@@ -1,34 +1,33 @@
 module Featureflow
   class Conditions
     def self.test(op, a, b)
-      b = b[0] unless %w(in notIn).include? op
       case op
       when 'equals'
-        a.eql? b
+        a.eql? b[0]
       when 'contains'
-        a.include? b
+        a.include? b[0]
       when 'startsWith'
-        a.start_with? b
+        a.start_with? b[0]
       when 'endsWith'
-        a.end_with? b
+        a.end_with? b[0]
       when 'matches'
-        a.match? Regexp.new(b)
+        a.match? Regexp.new(b[0])
       when 'in'
         b.include? a
       when 'notIn'
         !b.include? a
       when 'greaterThan'
-        a > b
+        a > b[0]
       when 'greaterThanOrEqual'
-        a >= b
+        a >= b[0]
       when 'lessThan'
-        a < b
+        a < b[0]
       when 'lessThanOrEqual'
-        a <= b
+        a <= b[0]
       when 'before'
-        a < b
+        a < b[0]
       when 'after'
-        a > b
+        a > b[0]
       else
         false
       end
