@@ -1,4 +1,4 @@
-require_relative '../../lib/featureflow/ruby/src/Conditions'
+require 'featureflow/conditions'
 
 Given(/^the target is a "([^"]*)" with the value of "([^"]*)"$/) do |type, target|
   @result = nil
@@ -12,7 +12,7 @@ Given(/^the value is a "([^"]*)" with the value of "([^"]*)"$/) do |type, value|
 end
 
 When(/^the operator test "([^"]*)" is run$/) do |op|
-  @result = Conditions.test(op, @target, @value)
+  @result = Featureflow::Conditions.test(op, @target, @value)
 end
 
 Then(/^the output should equal "([^"]*)"$/) do |result|

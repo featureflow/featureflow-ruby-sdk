@@ -1,4 +1,4 @@
-require_relative '../../lib/featureflow/ruby/src/EvaluateHelpers'
+require 'featureflow/evaluate_helpers'
 
 Given(/^the salt is "([^"]*)", the feature is "([^"]*)" and the key is "([^"]*)"$/) do |salt, feature, key|
   @salt = salt
@@ -7,8 +7,8 @@ Given(/^the salt is "([^"]*)", the feature is "([^"]*)" and the key is "([^"]*)"
 end
 
 When(/^the variant value is calculated$/) do
-  @hash = EvaluateHelpers.calculate_hash(@salt, @feature, @key);
-  @result = EvaluateHelpers.get_variant_value(@hash);
+  @hash = Featureflow::EvaluateHelpers.calculate_hash(@salt, @feature, @key);
+  @result = Featureflow::EvaluateHelpers.get_variant_value(@hash);
 end
 
 Then(/^the hash value calculated should equal "([^"]*)"$/) do |hash|

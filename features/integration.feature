@@ -1,4 +1,3 @@
-@ignore
 @integration
 Feature: Integration
   Scenario Outline: Test that we can instantiate the client

@@ -1,5 +1,5 @@
 require 'json'
-require_relative '../../lib/featureflow/ruby/src/EvaluateHelpers'
+require 'featureflow/evaluate_helpers'
 
 Before do
   @rule = {
@@ -18,7 +18,7 @@ Given(/^the rule is a default rule$/) do
 end
 
 When(/^the rule is matched against the context$/) do
-  @result = EvaluateHelpers.rule_matches(@rule, @context)
+  @result = Featureflow::EvaluateHelpers.rule_matches(@rule, @context)
 end
 
 Then(/^the result from the match should be (true|false)$/) do |value|
@@ -61,7 +61,7 @@ Given(/^the variant splits are$/) do |splits|
 end
 
 When(/^the variant split key is calculated$/) do
-  @result = EvaluateHelpers.get_variant_split_key(@rule['variantSplits'], @variant_value)
+  @result = Featureflow::EvaluateHelpers.get_variant_split_key(@rule['variantSplits'], @variant_value)
 end
 
 Then(/^the resulting variant should be "([^']*)"$/) do |result|
