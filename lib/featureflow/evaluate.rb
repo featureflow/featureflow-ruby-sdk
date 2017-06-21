@@ -3,7 +3,6 @@ require_relative 'evaluate_helpers'
 module Featureflow
   class Evaluate
     def initialize(feature_key, feature, default_variant = 'off', context = {})
-      # Instance variables
       @evaluated_variant = calculate_variant feature_key, feature, default_variant, context
       @context = context
       @key = feature_key
@@ -28,7 +27,16 @@ module Featureflow
     end
 
     private def calculate_variant(feature_key, feature, default_variant, context, salt = '1')
-      return default_variant unless feature
+      unless feature
+        if default_variant
+          Featureflow.logger.info "Evaluating nil feature '#{feature_key}' using default_variant '#{default_variant}'"
+          return default_variant
+        else
+          Featureflow.logger.info "Evaluating nil feature '#{feature_key}' using fallback 'off'"
+          return 'off'
+        end
+      end
+
       return feature['offVariantKey'] unless feature['enabled']
       feature['rules'].each do |rule|
         next unless EvaluateHelpers.rule_matches rule, context

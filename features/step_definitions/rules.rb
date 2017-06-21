@@ -1,5 +1,6 @@
 require 'json'
 require 'featureflow/evaluate_helpers'
+require 'featureflow/context_builder'
 
 Before do
   @rule = {
@@ -7,10 +8,7 @@ Before do
     'defaultRule' => false,
     'variantSplits' => []
   }
-  @context = {
-    'key' => 'anonymous',
-    'values' => {}
-  }
+  @context_builder = Featureflow::ContextBuilder.new('anonymous')
 end
 
 Given(/^the rule is a default rule$/) do
@@ -18,7 +16,7 @@ Given(/^the rule is a default rule$/) do
 end
 
 When(/^the rule is matched against the context$/) do
-  @result = Featureflow::EvaluateHelpers.rule_matches(@rule, @context)
+  @result = Featureflow::EvaluateHelpers.rule_matches(@rule, @context_builder.build)
 end
 
 Then(/^the result from the match should be (true|false)$/) do |value|
@@ -27,7 +25,7 @@ end
 
 Given(/^the context values are$/) do |context_values|
   context_values.hashes.each do |row|
-    @context['values'][row['key']] = JSON.parse(row['value'])
+    @context_builder.with_values row['key'] => JSON.parse(row['value'])
   end
 end
 
