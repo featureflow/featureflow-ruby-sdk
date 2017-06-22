@@ -7,7 +7,9 @@ require 'featureflow/events_client'
 
 module Featureflow
   class Client
-    def initialize(api_key, config = {})
+    def initialize(config = {})
+      api_key = config[:api_key] || ENV[:FEATUREFLOW_SERVER_KEY]
+      raise ArgumentError, "You have not defined either config[:api_key] or ENV[:FEATUREFLOW_SERVER_KEY]" unless api_key
       Featureflow.logger.info 'initializing client'
       @features = {}
       @config = {
