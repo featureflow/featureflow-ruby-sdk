@@ -33,14 +33,14 @@ module Featureflow
 
     private def send_event(event_name, method, path, body)
       connection = Excon.new(@url)
-      response connection.request(method: method,
-                                  path: path,
-                                  headers: {
-                                    'Authorization' => "Bearer #{@api_key}",
-                                    'Content-Type' => 'application/json;charset=UTF-8'
-                                  },
-                                  omit_default_port: true,
-                                  body: JSON.generate(body))
+      response = connection.request(method: method,
+                                    path: path,
+                                    headers: {
+                                      'Authorization' => "Bearer #{@api_key}",
+                                      'Content-Type' => 'application/json;charset=UTF-8'
+                                    },
+                                    omit_default_port: true,
+                                    body: JSON.generate(body))
       if response.status >= 400
         Featureflow.logger.error "unable to send event #{event_name} to #{@url+path}. Failed with response status #{response.status}"
         Featureflow.logger.error response.to_s
