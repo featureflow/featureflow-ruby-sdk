@@ -16,7 +16,8 @@ module Featureflow
         api_key: api_key,
         url: 'https://app.featureflow.io',
         path: '/api/sdk/v1/features',
-        with_features: []
+        with_features: [],
+        disable_events: false
       }.merge(config)
 
       unless with_features_valid? @config[:with_features]
@@ -30,8 +31,10 @@ module Featureflow
         @failover_variants[feature[:key]] = failover if failover.is_a?(String) && !failover.empty?
       end
 
-      @events_client = EventsClient.new @config[:url], @config[:api_key]
-      @events_client.register_features @config[:with_features]
+      unless @config[:disable_events]
+        @events_client = EventsClient.new @config[:url], @config[:api_key]
+        @events_client.register_features @config[:with_features]
+      end
 
       PollingClient.new(@config[:url] + @config[:path],
                         @config[:api_key],

@@ -2,29 +2,43 @@ require 'featureflow'
 
 
 Given(/^there is access to the Featureflow library$/) do
-  pending # Write code here that turns the phrase above into concrete actions
+  expect(Featureflow::Client).to be
 end
 
-When(/^the FeatureflowClient is initialized with the apiKey "([^"]*)"$/) do |arg1|
-  pending # Write code here that turns the phrase above into concrete actions
+When(/^the FeatureflowClient is initialized with the apiKey "([^"]*)"$/) do |api_key|
+  begin
+    @client = Featureflow::Client.new api_key: api_key, disable_events: true
+  rescue => e
+    @error = e
+  end
 end
+
+When(/^the FeatureflowClient is initialized with no apiKey$/) do
+  begin
+    @client = Featureflow::Client.new disable_events: true
+  rescue => e
+    @error = e
+  end
+end
+
+When(/^the feature "([^"]*)" with context key "([^"]*)" is evaluated with the value "([^"]*)"$/) do |feature_key, context_key, value|
+  @context = Featureflow::ContextBuilder.new(context_key).build
+  @result = @client.evaluate(feature_key, @context).is? value
+end
+
 
 Then(/^it should return a featureflow client$/) do
-  pending # Write code here that turns the phrase above into concrete actions
+  expect(@client).to be
 end
 
-And(/^there should not be an error$/) do
-  pending # Write code here that turns the phrase above into concrete actions
+Then(/^the featureflow client should throw an error$/) do
+  expect(@error).to be
+end
+
+Then(/^the result of the evaluation should equal (true|false)$/) do |value|
+  expect(@result).to eq(value == 'true')
 end
 
 And(/^it should be able to evaluate a rule$/) do
-  pending # Write code here that turns the phrase above into concrete actions
-end
-
-Then(/^it should not return a featureflow client$/) do
-  pending # Write code here that turns the phrase above into concrete actions
-end
-
-And(/^there should be an error$/) do
-  pending # Write code here that turns the phrase above into concrete actions
+  expect(@client.evaluate(feature_key, context)).to be
 end
