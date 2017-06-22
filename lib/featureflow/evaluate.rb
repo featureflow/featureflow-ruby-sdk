@@ -10,7 +10,7 @@ module Featureflow
     end
 
     def is?(value)
-      @events_client.evaluate @key, @evaluated_variant, value, @context unless events_client.is_a?(NilClass)
+      @events_client.evaluate @key, @evaluated_variant, value, @context unless @events_client.is_a?(NilClass)
       @evaluated_variant == value
     end
 
