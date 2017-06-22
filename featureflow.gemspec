@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'featureflow/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "featureflow-ruby-sdk"
+  spec.name          = "featureflow"
   spec.version       = Featureflow::VERSION
   spec.authors       = ["Henry Young"]
   spec.email         = ["henry@featureflow.io"]

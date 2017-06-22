@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    featureflow-ruby-sdk (0.2.0)
+    featureflow (0.3.0)
       excon (~> 0.57.0)
 
 GEM
@@ -45,7 +45,7 @@ PLATFORMS
 DEPENDENCIES
   bundler (~> 1.15)
   cucumber (~> 2.4.0)
-  featureflow-ruby-sdk!
+  featureflow!
   rake (~> 10.0)
   rspec (~> 3.0)
 
