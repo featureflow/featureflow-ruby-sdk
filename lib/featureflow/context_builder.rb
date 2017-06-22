@@ -1,7 +1,7 @@
 module Featureflow
   class ContextBuilder
     def initialize(key)
-      raise ArgumentError, 'Parameter key must be a String' unless key.is_a?(String) && key.length > 0
+      raise ArgumentError, 'Parameter key must be a String' unless key.is_a?(String) && !key.empty?
       @context_key = key
       @values = {}
       self

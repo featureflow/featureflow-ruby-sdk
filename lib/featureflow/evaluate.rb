@@ -2,13 +2,15 @@ require_relative 'evaluate_helpers'
 
 module Featureflow
   class Evaluate
-    def initialize(feature_key, feature, default_variant = 'off', context = {})
-      @evaluated_variant = calculate_variant feature_key, feature, default_variant, context
+    def initialize(feature_key, feature, failover_variant, context, salt, events_client = nil)
+      @evaluated_variant = calculate_variant feature_key, feature, failover_variant, context, salt
+      @events_client = events_client
       @context = context
       @key = feature_key
     end
 
     def is?(value)
+      @events_client.evaluate @key, @evaluated_variant, value, @context unless events_client.is_a?(NilClass)
       @evaluated_variant == value
     end
 
@@ -26,15 +28,13 @@ module Featureflow
       @evaluated_variant
     end
 
-    private def calculate_variant(feature_key, feature, default_variant, context, salt = '1')
+    private def calculate_variant(feature_key, feature, failover_variant, context = {}, salt = '1')
       unless feature
-        if default_variant
-          Featureflow.logger.info "Evaluating nil feature '#{feature_key}' using default_variant '#{default_variant}'"
-          return default_variant
-        else
-          Featureflow.logger.info "Evaluating nil feature '#{feature_key}' using fallback 'off'"
-          return 'off'
-        end
+        has_failover = failover_variant.is_a?(String)
+        failover_variant = 'off' unless has_failover
+        Featureflow.logger.info "Evaluating nil feature '#{feature_key}' using the "\
+          "#{has_failover ? 'provided' : 'default'} failover '#{failover_variant}'"
+        return failover_variant
       end
 
       return feature['offVariantKey'] unless feature['enabled']

@@ -1,6 +1,7 @@
 require 'featureflow/version'
 require 'featureflow/client'
 require 'featureflow/context_builder'
+require 'featureflow/feature'
 
 module Featureflow
   class << self

@@ -3,6 +3,7 @@ require 'time'
 require 'pp'
 require 'featureflow/evaluate'
 require 'featureflow/polling_client'
+require 'featureflow/events_client'
 
 module Featureflow
   class Client
@@ -13,12 +14,22 @@ module Featureflow
         api_key: api_key,
         url: 'https://app.featureflow.io',
         path: '/api/sdk/v1/features',
-        default_variants: {}
+        with_features: []
       }.merge(config)
 
-      unless default_variants_valid? @config[:default_variants]
-        raise ArgumentError, 'config[:default_variants] must be a Hash with string keys and string values'
+      unless with_features_valid? @config[:with_features]
+        raise ArgumentError, 'config[:with_features] must be an array of Feature hashes. Use Featureflow::Feature.create(key, failover_variant)'
       end
+
+      @failover_variants = {}
+      @config[:with_features].each do |feature|
+        Featureflow.logger.info "Registering feature with key #{feature[:key]}"
+        failover = feature[:failover_variant];
+        @failover_variants[feature[:key]] = failover if failover.is_a?(String) && !failover.empty?
+      end
+
+      @events_client = EventsClient.new @config[:url], @config[:api_key]
+      @events_client.register_features @config[:with_features]
 
       PollingClient.new(@config[:url] + @config[:path],
                         @config[:api_key],
@@ -40,7 +51,11 @@ module Featureflow
       context[:values] = context[:values].merge('featureflow.key' => context[:key],
                                                 'featureflow.date' => Time.now.iso8601)
 
-      Evaluate.new key, feature(key), @config[:default_variants][key], context
+      Evaluate.new key, feature(key), failover_variant(key), context, '1', @events_client
+    end
+
+    private def failover_variant(key)
+      @failover_variants[key]
     end
 
     private def update_features(features)
@@ -48,8 +63,10 @@ module Featureflow
       @features = features
     end
 
-    private def default_variants_valid?(features)
-      features.all? { |k, v| k.is_a?(String) && v.is_a?(String) }
+    private def with_features_valid?(features)
+      features.all? { |feature|
+        feature[:key].is_a?(String) && feature[:failover_variant].is_a?(String) && feature[:variants].is_a?(Array)
+      }
     end
   end
 end

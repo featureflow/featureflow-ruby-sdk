@@ -36,7 +36,7 @@ module Featureflow
         Featureflow.logger.error response.to_s
       end
     rescue => e
-      puts e.inspect
+      Featureflow.logger.error e.inspect
     end
   end
 end
