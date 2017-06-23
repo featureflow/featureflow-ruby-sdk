@@ -4,7 +4,7 @@ require 'json'
 module Featureflow
   class PollingClient
     DEFAULT_OPTIONS = {
-      delay: 30,
+      poll_interval: 30,
       timeout: 30
     }.freeze
     def initialize(url, api_key, options = {}, &set_features)
@@ -17,7 +17,7 @@ module Featureflow
       load_features
       Thread.new do
         loop do
-          sleep @options[:delay]
+          sleep @options[:poll_interval]
           load_features
         end
       end

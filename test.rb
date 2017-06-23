@@ -7,15 +7,15 @@ with_features = [
 
 
 
-api_key = 'srv-env-9b5fff890c724d119a334a64ed4d2eb2'
-featureflow_client = Featureflow::Client.new(api_key: api_key, with_features: with_features)
-# context = Featureflow::ContextBuilder.new('user1').build
-puts('test-integration is on? ' + featureflow_client.evaluate('test-integration', 'user1').on?.to_s)
-featureflow_client.evaluate('nooooo', 'user1').on?
-featureflow_client.evaluate('default', 'user1').on?
+# api_key = 'srv-env-9b5fff890c724d119a334a64ed4d2eb2'
+api_key = 'srv-env-f472cfa8c2774ea2b3678fc5a3dbfe13'
+featureflow_client = Featureflow::Client.new(api_key: api_key, with_features: with_features, url: 'http://10.10.2.163:8081')
+context = Featureflow::ContextBuilder.new('user1').build
+puts('test-integration is on? ' + featureflow_client.evaluate('test-integration', context).on?.to_s)
+featureflow_client.evaluate('nooooo', context).on?
+featureflow_client.evaluate('default', context).on?
 
 #
-# loop do
-#   puts('test-integration is on? ' + featureflow_client.evaluate('test-integration', context).on?.to_s)
-#   sleep 5
-# end
+loop do
+  sleep 1
+end
