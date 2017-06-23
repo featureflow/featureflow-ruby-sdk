@@ -50,7 +50,13 @@ module Featureflow
 
     def evaluate(key, context)
       raise ArgumentError, 'key must be a string' unless key.is_a?(String)
-      raise ArgumentError, 'context is required (build with Featureflow::ContextBuilder)' unless context
+      raise ArgumentError, 'context is required' unless context
+      unless context.is_a?(String) || context.is_a?(Hash)
+        raise ArgumentError, 'context must be either a string context key,' + \
+                             ' or a Hash built using Featureflow::ContextBuilder)'
+      end
+
+      context = ContextBuilder.new(context).build if context.is_a?(String)
 
       context = context.dup
       context[:values] = context[:values].merge('featureflow.key' => context[:key],

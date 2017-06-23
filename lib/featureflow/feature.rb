@@ -1,6 +1,6 @@
 module Featureflow
   class Feature
-    def self.create(key, failover_variant)
+    def self.create(key, failover_variant = 'off')
       raise ArgumentError, 'Parameter key must be a String' unless valid_key?(key)
       raise ArgumentError, 'Parameter default_variant must be a String' unless valid_key?(failover_variant) || failover_variant.is_a?(NilClass)
       {
