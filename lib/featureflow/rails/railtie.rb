@@ -31,11 +31,9 @@ module Featureflow
       ActiveSupport.on_load(:action_controller) do
         # @client =
         ActionController::Base.class_eval do
-          def configure_featureflow
-            @featureflow = Featureflow::RailsClient.new(request)
+          def featureflow
+            Featureflow::RailsClient.new(request)
           end
-
-          before_action :configure_featureflow
         end
       end
     end

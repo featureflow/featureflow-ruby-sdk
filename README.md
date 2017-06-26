@@ -36,17 +36,48 @@ The usage of each class is documented below.
 
 ### Quick start
 
-Get your environment's Featureflow Server API key and initialise a new Featureflow client
+Firstly you will need to get your environment's Featureflow Server API key and initialise a new Featureflow client
+
+This will load the rules for each feature for the current environment, specified by the api key.
+These rules can be changed at `https://<your-org-key>.featureflow.io`. 
+When the rules are updated, the changes made will be applied to your application.
+
+##### Ruby Quick Start
+
+If you are using ruby you can create a featureflow client like this:
 
 ```ruby
-FEATUREFLOW_SERVER_KEY = '<Your server api key goes here>'
-featureflow = Featureflow::Client.new api_key: FEATUREFLOW_SERVER_KEY
+featureflow = Featureflow::Client.new api_key: '<Your server api key goes here>'
 ```
 
-This will load the rules for each feature for the current environment specified by the api key.
-These rules can be changed at `https://<your-org-key>.featureflow.io`, and the changes will be applied to your application.
+Or, you can set the environment variable `FEATUREFLOW_SERVER_KEY` and just write:
 
-**Note: You are responsible for passing the featureflow instance around your application**
+```ruby
+featureflow = Featureflow::Client.new
+```
+**Note: `featureflow`, as instantiated above, should be treated as a singleton. You are responsible for sharing it with the rest of your application**
+
+##### Rails Quick Start
+
+If you are using rails you can run the generator to setup Featureflow in your Rails application.
+
+```bash
+$ rails generator featureflow <Your server api key goes here>
+```
+
+Or, you can set the environment variable `FEATUREFLOW_SERVER_KEY` and the Rails Featureflow client will pick it up and use that.
+
+You will then be able to access your Featureflow client in your controllers, for example:
+
+```ruby
+class MainController < ApplicationController
+  def index
+    featureflow # this method will now reference the featureflow client
+  end
+end
+```
+
+
 
 #### Defining Context
 
@@ -128,7 +159,8 @@ Further documentation can be found [here](http://docs.featureflow.io/docs)
 ## Roadmap
 - [x] Write documentation
 - [x] Release to RubyGems
-- [ ] Write Ruby on Rails integration
+- [x] Write Ruby on Rails integration
+- [ ] Add Ruby on Rails helper to user featureflow in views
 
 ## License
 
