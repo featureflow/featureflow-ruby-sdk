@@ -14,3 +14,5 @@ module Featureflow
     end
   end
 end
+
+require 'featureflow/rails/railtie' if defined?(Rails)

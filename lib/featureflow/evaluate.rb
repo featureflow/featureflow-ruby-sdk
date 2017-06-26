@@ -1,4 +1,4 @@
-require_relative 'evaluate_helpers'
+require 'featureflow/evaluate_helpers'
 
 module Featureflow
   class Evaluate
