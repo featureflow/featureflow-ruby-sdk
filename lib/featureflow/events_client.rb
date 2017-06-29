@@ -14,7 +14,7 @@ module Featureflow
         features = with_features.each do | feature |
           features.push(key: feature[:key],
                           variants: feature[:variants],
-                          failoverVariant: feature[:failoverVariant])
+                          failoverVariant: feature[:failover_variant])
         end
         send_event 'Register Features', :put, 'api/sdk/v1/register', features
       end
