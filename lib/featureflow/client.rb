@@ -38,7 +38,7 @@ module Featureflow
 
       PollingClient.new(@config[:url] + @config[:path],
                         @config[:api_key],
-                        delay: 30,
+                        poll_interval: 10,
                         timeout: 30) {|features| update_features(features)}
 
       Featureflow.logger.info 'client initialized'
