@@ -1,4 +1,7 @@
 # Change log
+## [0.5.1] - 2017-07-17
+### Fixed 
+- Feature registration now compatible with Ruby 2.4
 ## [0.5.0] - 2017-06-29
 ### Fixed
 - Changed `feature[:failoverVariant]` to `feature[:failover_variant]` for feature registration
