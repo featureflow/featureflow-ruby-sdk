@@ -8,9 +8,8 @@ with_features = [
 
 
 
-
-# api_key = ''
-featureflow_client = Featureflow::Client.new(api_key: api_key, with_features: with_features, url: 'http://10.10.2.150:8081/')
+api_key = ''
+featureflow_client = Featureflow::Client.new(api_key: api_key, with_features: with_features, url: 'http://localhost:8081')
 context = Featureflow::ContextBuilder.new('user1').build
 puts('test-integration is on? ' + featureflow_client.evaluate('test-integration', context).on?.to_s)
 featureflow_client.evaluate('nooooo', context).on?
