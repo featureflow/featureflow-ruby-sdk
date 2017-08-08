@@ -26,7 +26,8 @@ module Featureflow
     def load_features
       response = Excon.get(@url, headers: {
         'Authorization' => "Bearer #{@api_key}",
-        'If-None-Match' => @etag
+        'If-None-Match' => @etag,
+        'X-Featureflow-Client' => 'RubyClient/' + Featureflow::VERSION
       }, omit_default_port: true, read_timeout: @options[:timeout])
       if response.status == 200
         @etag = response.headers['ETag']

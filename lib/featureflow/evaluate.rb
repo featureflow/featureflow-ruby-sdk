@@ -28,7 +28,8 @@ module Featureflow
       @evaluated_variant
     end
 
-    private def calculate_variant(feature_key, feature, failover_variant, context = {}, salt = '1')
+    private
+    def calculate_variant(feature_key, feature, failover_variant, context = {}, salt = '1')
       unless feature
         has_failover = failover_variant.is_a?(String)
         failover_variant = 'off' unless has_failover

@@ -37,7 +37,8 @@ module Featureflow
                                     path: path,
                                     headers: {
                                       'Authorization' => "Bearer #{@api_key}",
-                                      'Content-Type' => 'application/json;charset=UTF-8'
+                                      'Content-Type' => 'application/json;charset=UTF-8',
+                                      'X-Featureflow-Client' => 'RubyClient/' + Featureflow::VERSION
                                     },
                                     omit_default_port: true,
                                     body: JSON.generate(body))
