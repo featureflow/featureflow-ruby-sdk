@@ -23,20 +23,31 @@ module Featureflow
         @events_client.register_features @configuration.with_features
       end
 
+      reload
+
+      Featureflow.logger.info 'client initialized'
+    end
+
+    def reload
+      @polling_client.finish if @polling_client
+      @polling_client = build_polling_client
+    end
+
+    def build_polling_client
       PollingClient.new(
         @configuration.endpoint,
         @configuration.api_key,
         poll_interval: 10,
         timeout: 30
-      ) do |features|
-        update_features(features)
-      end
-
-      Featureflow.logger.info 'client initialized'
+      )
     end
 
     def feature(key)
-      @features[key]
+      @polling_client.feature(key)
+    end
+
+    def failover_variant(key)
+      @failover_variants[key]
     end
 
     def evaluate(key, context)
@@ -53,17 +64,14 @@ module Featureflow
       context[:values] = context[:values].merge('featureflow.key' => context[:key],
                                                 'featureflow.date' => Time.now.iso8601)
 
-      Evaluate.new key, feature(key), failover_variant(key), context, '1', @events_client
-    end
-
-    private
-    def failover_variant(key)
-      @failover_variants[key]
-    end
-
-    def update_features(features)
-      Featureflow.logger.info "updating features"
-      @features = features
+      Evaluate.new(
+        feature_key: key,
+        feature: feature(key),
+        failover_variant: failover_variant(key),
+        context: context,
+        salt: '1',
+        events_client: @events_client
+      )
     end
   end
 end
