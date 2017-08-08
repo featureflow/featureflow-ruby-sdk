@@ -29,8 +29,10 @@ module Featureflow
       @client ||= Featureflow::Client.new(configuration)
     end
 
-    def evaluate(**args)
-      client.evaluate(**args)
+    alias featureflow client
+
+    def evaluate(*args)
+      client.evaluate(*args)
     end
   end
 end
