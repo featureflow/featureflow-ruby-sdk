@@ -2,7 +2,7 @@ require 'logger'
 require 'featureflow/version'
 require 'featureflow/configuration'
 require 'featureflow/client'
-require 'featureflow/context_builder'
+require 'featureflow/context'
 require 'featureflow/feature'
 
 module Featureflow
@@ -31,8 +31,8 @@ module Featureflow
 
     alias featureflow client
 
-    def evaluate(*args)
-      client.evaluate(*args)
+    def evaluate(key, *args)
+      client.evaluate(key, *args)
     end
   end
 end

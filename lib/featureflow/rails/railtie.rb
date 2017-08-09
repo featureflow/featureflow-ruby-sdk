@@ -1,12 +1,19 @@
-require 'featureflow/rails/rails_client'
+require 'featureflow/rails/middleware'
+
 class Featureflow::FeatureflowRailtie < Rails::Railtie
   config.before_initialize do
     ActiveSupport.on_load(:action_controller) do
       ActionController::Base.class_eval do
         def featureflow
-          @featureflow ||= Featureflow::RailsClient.new(request)
+          Featureflow.featureflow
         end
+
+        helper_method :featureflow
       end
     end
+  end
+
+  initializer "featureflow.middleware" do |app|
+    app.config.middleware.use Featureflow::Middleware
   end
 end

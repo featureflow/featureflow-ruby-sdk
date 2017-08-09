@@ -4,6 +4,18 @@ require 'featureflow/events_client'
 
 module Featureflow
   class Client
+    def self.default_context_values=(values)
+      Thread.current[:featureflow_default_context_values] = values
+    end
+
+    def self.default_context_values
+      Thread.current[:featureflow_default_context_values] ||= {}
+    end
+
+    def self.clear_default_context_values
+      Thread.current[:featureflow_default_context_values] = {}
+    end
+
     def initialize(configuration = nil)
       @configuration = configuration || Featureflow.configuration
       @configuration.validate!
@@ -50,25 +62,17 @@ module Featureflow
       @failover_variants[key]
     end
 
-    def evaluate(key, context)
+    def evaluate(key, *args)
       raise ArgumentError, 'key must be a string' unless key.is_a?(String)
-      raise ArgumentError, 'context is required' unless context
-      unless context.is_a?(String) || context.is_a?(Hash)
-        raise ArgumentError, 'context must be either a string context key,' + \
-                             ' or a Hash built using Featureflow::ContextBuilder)'
-      end
 
-      context = ContextBuilder.new(context).build if context.is_a?(String)
-
-      context = context.dup
-      context[:values] = context[:values].merge('featureflow.key' => context[:key],
-                                                'featureflow.date' => Time.now.iso8601)
+      context = Featureflow::Context.from_params(*args)
+      context.values = self.class.default_context_values.merge(context.values)
 
       Evaluate.new(
         feature_key: key,
         feature: feature(key),
         failover_variant: failover_variant(key),
-        context: context,
+        context: context.serialize,
         salt: '1',
         events_client: @events_client
       )
