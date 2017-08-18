@@ -8,7 +8,9 @@ class Featureflow::FeatureflowRailtie < Rails::Railtie
           Featureflow.featureflow
         end
 
-        helper_method :featureflow
+        alias ff featureflow
+
+        helper_method :featureflow, :ff
       end
     end
   end
