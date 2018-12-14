@@ -8,7 +8,7 @@ with_features = [
 
 
 
-api_key = 'srv-env-5a67eb7ef7c4416b8920fe77e99db144'
+api_key = 'srv-env-'
 config = Featureflow::Configuration.new
 config.api_key = api_key
 config.endpoint = 'http://localhost:8081'
