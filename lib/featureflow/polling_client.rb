@@ -35,14 +35,15 @@ module Featureflow
     end
 
     def load_features
-      response = Excon.get(@url, headers: {
+      response = Excon.get(@url +  + '/api/sdk/v1/features', headers: {
         'Authorization' => "Bearer #{@api_key}",
+        'Accept' => 'Application/Json',
         'If-None-Match' => @etag,
         'X-Featureflow-Client' => 'RubyClient/' + Featureflow::VERSION
       }, omit_default_port: true, read_timeout: @options[:timeout])
 
       if response.status == 200
-        Featureflow.logger.info "updating features"
+        Featureflow.logger.debug "updating features"
 
         @etag = response.headers['ETag']
 

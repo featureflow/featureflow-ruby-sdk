@@ -1,6 +1,7 @@
 require 'excon'
 require 'json'
 require 'thread'
+require 'time'
 
 module Featureflow
   #LOCK = Mutex.new
@@ -55,7 +56,7 @@ module Featureflow
 
         @eventsQueue.push(event)
 
-        if !scheduler.alive?
+        if !@scheduler.alive?
           @scheduler = start_scheduler
         end
 
@@ -109,6 +110,7 @@ module Featureflow
                                     headers: {
                                         'Authorization' => "Bearer #{@api_key}",
                                         'Content-Type' => 'application/json;charset=UTF-8',
+                                        'Accept' => 'Application/Json',
                                         'X-Featureflow-Client' => 'RubyClient/' + Featureflow::VERSION
                                     },
                                     omit_default_port: true,

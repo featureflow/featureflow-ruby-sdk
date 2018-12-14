@@ -19,7 +19,7 @@ module Featureflow
       end
 
       unless @configuration.disable_events
-        @events_client = EventsClient.new @configuration.endpoint, @configuration.api_key
+        @events_client = EventsClient.new @configuration.event_endpoint, @configuration.api_key
         @events_client.register_features @configuration.with_features
       end
 
@@ -61,8 +61,7 @@ module Featureflow
       context = ContextBuilder.new(context).build if context.is_a?(String)
 
       context = context.dup
-      context[:values] = context[:values].merge('featureflow.key' => context[:key],
-                                                'featureflow.date' => Time.now.iso8601)
+      context[:values] = context[:values].merge('featureflow.key' => context[:key])
 
       Evaluate.new(
         feature_key: key,

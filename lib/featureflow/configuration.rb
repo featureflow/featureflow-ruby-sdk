@@ -1,15 +1,18 @@
 class Featureflow::Configuration
   attr_accessor :api_key
   attr_accessor :endpoint
+  attr_accessor :event_endpoint
   attr_accessor :disable_events
   attr_accessor :with_features
   attr_accessor :logger
   
-  DEFAULT_ENDPOINT = 'https://app.featureflow.io/api/sdk/v1/features'
+  DEFAULT_ENDPOINT = 'https://app.featureflow.io'
+  DEFAULT_EVENT_ENDPOINT = 'https://events.featureflow.io'
 
   def initialize
     self.api_key = ENV["FEATUREFLOW_SERVER_KEY"]
     self.endpoint = DEFAULT_ENDPOINT
+    self.event_endpoint = DEFAULT_EVENT_ENDPOINT
     self.disable_events = false
     self.with_features = []
 
