@@ -2,7 +2,7 @@ require 'logger'
 require 'featureflow/version'
 require 'featureflow/configuration'
 require 'featureflow/client'
-require 'featureflow/context_builder'
+require 'featureflow/user_builder'
 require 'featureflow/feature'
 
 module Featureflow

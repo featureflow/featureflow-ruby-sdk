@@ -2,11 +2,11 @@ require 'featureflow/evaluate_helpers'
 
 module Featureflow
   class Evaluate
-    def initialize(feature_key:, feature:, failover_variant:, context:, salt:, events_client: nil)
+    def initialize(feature_key:, feature:, failover_variant:, user:, salt:, events_client: nil)
       @key = feature_key
       @feature = feature
       @failover_variant = failover_variant
-      @context = context
+      @user = user
       @salt = salt
       @events_client = events_client
 
@@ -17,7 +17,7 @@ module Featureflow
     end
 
     def is?(value)
-      @events_client.evaluate(@key, @evaluated_variant, value, @context) if @events_client
+      @events_client.evaluate(@key, @evaluated_variant, value, @user) if @events_client
       @evaluated_variant == value
     end
 
@@ -47,8 +47,8 @@ module Featureflow
       return @feature['offVariantKey'] unless @feature['enabled']
 
       @feature['rules'].each do |rule|
-        next unless EvaluateHelpers.rule_matches(rule, @context)
-        hash = EvaluateHelpers.calculate_hash(@salt, @feature['key'], @context['key'])
+        next unless EvaluateHelpers.rule_matches(rule, @user)
+        hash = EvaluateHelpers.calculate_hash(@salt, @feature['key'], @user['id'])
         variant_value = EvaluateHelpers.get_variant_value(hash)
         return EvaluateHelpers.get_variant_split_key(rule['variantSplits'], variant_value)
       end

@@ -50,24 +50,24 @@ module Featureflow
       @failover_variants[key]
     end
 
-    def evaluate(key, context)
+    def evaluate(key, user)
       raise ArgumentError, 'key must be a string' unless key.is_a?(String)
-      raise ArgumentError, 'context is required' unless context
-      unless context.is_a?(String) || context.is_a?(Hash)
-        raise ArgumentError, 'context must be either a string context key,' + \
-                             ' or a Hash built using Featureflow::ContextBuilder)'
+      raise ArgumentError, 'user is required' unless user
+      unless user.is_a?(String) || user.is_a?(Hash)
+        raise ArgumentError, 'user must be either a string user id,' + \
+                             ' or a Hash built using Featureflow::UserBuilder)'
       end
 
-      context = ContextBuilder.new(context).build if context.is_a?(String)
+      user = UserBuilder.new(user).build if user.is_a?(String)
 
-      context = context.dup
-      context[:values] = context[:values].merge('featureflow.key' => context[:key])
+      user = user.dup
+      user[:attributes] = user[:attributes].merge('featureflow.user.id' => user[:id])
 
       Evaluate.new(
         feature_key: key,
         feature: feature(key),
         failover_variant: failover_variant(key),
-        context: context,
+        user: user,
         salt: '1',
         events_client: @events_client
       )

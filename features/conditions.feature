@@ -1,12 +1,12 @@
 Feature: Conditions
   Scenario Outline: Test the "<operator>" operator returns a "<result>" result for a string (target: "<target>", value: "<value>", operator: "<operator>", result: "<result>")
     Given the target is a "string" with the value of "<target>"
-    And the value is a "string" with the value of "<value>"
+    And the attribute is a "string" with the value of "<attribute>"
     When the operator test "<operator>" is run
     Then the output should equal "<result>"
 
     Examples:
-      | operator        | target        | value                  | result |
+      | operator        | target        | attribute              | result |
       | equals          | my-test-value | my-test-value          | true   |
       | equals          | my-test-value | not-my-test-value      | false  |
       | equals          | 98            | 98                     | true   |
@@ -38,12 +38,12 @@ Feature: Conditions
 
   Scenario Outline: Test the "<operator>" operator returns a "<result>" result for an array of strings (target: "<target>", values: "<values>", operator: "<operator>", result: "<result>")
     Given the target is a "string" with the value of "<target>"
-    And the value is an array of values "<values>"
+    And the attribute is an array of values "<attributes>"
     When the operator test "<operator>" is run
     Then the output should equal "<result>"
 
     Examples:
-      | operator       | target        | values                 | result |
+      | operator       | target        | attributes                 | result |
       | in             | two           | one, two, three        | true   |
       | in             | four          | one, two, three        | false  |
       | notIn          | four          | one, two, three        | true   |
@@ -51,36 +51,57 @@ Feature: Conditions
 
   Scenario Outline: Test the "<operator>" operator returns a "<result>" result for a number  (target: "<target>", value: "<value>", operator: "<operator>", result: "<result>")
     Given the target is a "number" with the value of "<target>"
-    And the value is a "number" with the value of "<value>"
+    And the attribute is a "number" with the value of "<attribute>"
     When the operator test "<operator>" is run
     Then the output should equal "<result>"
 
     Examples:
-      | operator           | target        | value                  | result |
+      | operator           | target        | attribute                  | result |
+      | equals             | 9000          | 9000                   | true   |
+      | equals             | 9000          | 8999                   | false  |
+      | equals             | 9000.1        | 9000.1                 | true   |
+      | equals             | 9000.2        | 9000.1                 | false  |
+
       | greaterThan        | 9000          | 8999                   | true   |
       | greaterThan        | 9000          | 9001                   | false  |
       | greaterThan        | 9000          | 9000                   | false  |
+
+      | greaterThan        | 9000.2        | 9000.1                 | true   |
+      | greaterThan        | 9000.5        | 9001                   | false  |
+      | greaterThan        | 9000.5        | 9000.5                 | false  |
 
       | greaterThanOrEqual | 9000          | 8999                   | true   |
       | greaterThanOrEqual | 9000          | 9001                   | false  |
       | greaterThanOrEqual | 9000          | 9000                   | true   |
 
+      | greaterThanOrEqual | 9000.2        | 9000.1                 | true   |
+      | greaterThanOrEqual | 9000.5        | 9001                   | false  |
+      | greaterThanOrEqual | 9000.5        | 9000.5                 | true   |
+
       | lessThan           | 9000          | 8999                   | false  |
       | lessThan           | 9000          | 9001                   | true   |
       | lessThan           | 9000          | 9000                   | false  |
+
+      | lessThan           | 9000.2        | 9000.1                 | false  |
+      | lessThan           | 9000.5        | 9001                   | true   |
+      | lessThan           | 9000.5        | 9000.5                 | false  |
 
       | lessThanOrEqual    | 9000          | 8999                   | false  |
       | lessThanOrEqual    | 9000          | 9001                   | true   |
       | lessThanOrEqual    | 9000          | 9000                   | true   |
 
+      | lessThanOrEqual    | 9000.2        | 9000.1                 | false  |
+      | lessThanOrEqual    | 9000.5        | 9001                   | true   |
+      | lessThanOrEqual    | 9000.5        | 9000.5                 | true   |
+
   Scenario Outline: Test the "<operator>" operator returns a "<result>" result for a date (target: "<target>", value: "<value>", operator: "<operator>", result: "<result>")
     Given the target is a "string" with the value of "<target>"
-    And the value is a "string" with the value of "<value>"
+    And the attribute is a "string" with the value of "<attribute>"
     When the operator test "<operator>" is run
     Then the output should equal "<result>"
 
     Examples:
-      | operator           | target                   | value                    | result |
+      | operator           | target                   | attribute                    | result |
       | before             | 2017-03-09T02:39:46.182Z | 2017-04-09T02:39:46.182Z | true   |
       | before             | 2017-03-09T02:39:46.182Z | 2017-02-09T02:39:46.182Z | false  |
       | before             | 2017-03-09T02:39:46.182Z | 2017-03-09T02:39:46.182Z | false  |

@@ -30,7 +30,7 @@ gem 'featureflow'
 ```
 
 Requiring `featureflow` in your ruby application will expose the classes
- `Featureflow::Client`, `Featuerflow::ContextBuilder` and `Featureflow::Feature`.
+ `Featureflow::Client`, `Featuerflow::UserBuilder` and `Featureflow::Feature`.
 
 The usage of each class is documented below.
 
@@ -79,45 +79,45 @@ end
 
 
 
-#### Defining Context
+#### Defining a User
 
-Before evaluating a feature you must define a context for the current user.  
-Featureflow uses context to target different user groups to specific feature variants. 
-A featureflow context has a `key`, which should uniquely identify the current user, and optionally additional `values`. 
-Featureflow requires the context `key` to be unique per user for gradual rollout of features.
+Before evaluating a feature you must define a user.  
+Featureflow uses users to target different user groups to specific feature variants. 
+A featureflow user has an `id`, which should uniquely identify the current user, and optionally additional `attributes`. 
+Featureflow requires the user `id` to be unique per user for gradual rollout of features.
 
-There are two ways to define context:
+There are two ways to define a user:
 ```ruby
 require 'featureflow'
-context_key = '<unique_user_identifier>'
+user_id = '<unique_user_identifier>'
 
-# option 1, use the context builder
-context = Featureflow::ContextBuilder.new(context_key)
-                                     .with_values(country: 'US',
+# option 1, use the user builder
+user = Featureflow::UserBuilder.new(user_id)
+                                     .with_attributes(country: 'US',
                                                   roles: %w[USER_ADMIN, BETA_CUSTOMER])
                                      .build
 
 # option 2, use just a string
-context = context_key
+user = user_id
 ```
 
 #### Evaluating Features
 
 In your code, you can test the value of your feature using something similar to below
-For these examples below, assume the feature `my-feature-key` is equal to `'on'` for the current `context`
+For these examples below, assume the feature `my-feature-key` is equal to `'on'` for the current `user`
 ```ruby
-if featureflow.evaluate('my-feature-key', context).is? 'on'
-  # this code will be run because 'my-feature-key' is set to 'on' for the given context
+if featureflow.evaluate('my-feature-key', user).is? 'on'
+  # this code will be run because 'my-feature-key' is set to 'on' for the given user
 end
 ```
 Because the most common variants for a feature are `'on'` and `'off'`, we have provided two helper methods `.on?` and `.off?`
 
 ```ruby
-if featureflow.evaluate('my-feature-key', context).on?
+if featureflow.evaluate('my-feature-key', user).on?
   # this feature code will be run because 'my-feature-key' is set to 'on'
 end
 
-if featureflow.evaluate('my-feature-key', context).off?
+if featureflow.evaluate('my-feature-key', user).off?
   # this feature code won't be run because 'my-feature-key' is not set to 'off'
 end
 ```
@@ -147,9 +147,9 @@ featureflow = Featureflow::Client.new(api_key: FEATUREFLOW_SERVER_KEY,
                                       ])
 
 # ... app has been started offline
-featureflow.evaluate('key-one', context).on? # == true
-featureflow.evaluate('key-two', context).off? # == true
-featureflow.evaluate('key-three', context).is? 'custom' # == true
+featureflow.evaluate('key-one', user).on? # == true
+featureflow.evaluate('key-two', user).off? # == true
+featureflow.evaluate('key-three', user).is? 'custom' # == true
 
 ```
 

@@ -3,14 +3,14 @@ require 'digest/sha1'
 
 module Featureflow
   class EvaluateHelpers
-    def self.rule_matches(rule, context)
+    def self.rule_matches(rule, user)
       if rule['defaultRule']
         true # the default rule will always match true
       else
         rule['audience']['conditions'].all? do |condition|
-          context_values = context[:values][condition['target']]
+          user_values = user[:values][condition['target']]
           # convert to array to work with test
-          Array(context_values).any? do |value|
+          Array(user_values).any? do |value|
             Conditions.test condition['operator'], value, condition['values']
           end
         end

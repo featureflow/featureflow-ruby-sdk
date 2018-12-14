@@ -38,14 +38,14 @@ module Featureflow
       end
     end
 
-    def evaluate(key, evaluated_variant, expected_variant, context)
+    def evaluate(key, evaluated_variant, expected_variant, user)
       Thread.new do
         timestamp = Time.now.iso8601
         queue_event  ({
              featureKey: key,
              evaluatedVariant: evaluated_variant,
              expectedVaraint: expected_variant,
-             context: context,
+             user: user,
              timestamp: timestamp
        })
       end

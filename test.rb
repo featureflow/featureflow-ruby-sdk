@@ -8,7 +8,7 @@ with_features = [
 
 
 
-api_key = 'srv-env-...'
+api_key = 'srv-env-5a67eb7ef7c4416b8920fe77e99db144'
 config = Featureflow::Configuration.new
 config.api_key = api_key
 config.endpoint = 'http://localhost:8081'
@@ -19,15 +19,15 @@ featureflow_client = Featureflow::Client.new(config)
 =begin
 featureflow_client = Featureflow::Client.new(api_key: api_key, with_features: with_features, url: 'http://localhost:8081')
 =end
-context = Featureflow::ContextBuilder.new('user1').build
-puts('test-integration is on? ' + featureflow_client.evaluate('test-integration', context).on?.to_s)
-featureflow_client.evaluate('nooooo', context).on?
-featureflow_client.evaluate('default', context).on?
+user = Featureflow::UserBuilder.new('user1').build
+puts('test-integration is on? ' + featureflow_client.evaluate('test-integration', user).on?.to_s)
+featureflow_client.evaluate('nooooo', user).on?
+featureflow_client.evaluate('default', user).on?
 
 #
 loop do
   sleep 10
-  featureflow_client.evaluate('oli-f1', context).value
-  featureflow_client.evaluate('oli-f1', context).is?('extended')
-  featureflow_client.evaluate('default', context).on?
+  puts(featureflow_client.evaluate('oli-f1', user).value)
+  puts(featureflow_client.evaluate('oli-f1', user).is?('extended'))
+  puts(featureflow_client.evaluate('default', user).on?)
 end

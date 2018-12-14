@@ -1,6 +1,6 @@
 require 'json'
 require 'featureflow/evaluate_helpers'
-require 'featureflow/context_builder'
+require 'featureflow/user_builder'
 
 Before do
   @rule = {
