@@ -8,10 +8,10 @@ module Featureflow
         true # the default rule will always match true
       else
         rule['audience']['conditions'].all? do |condition|
-          user_values = user[:values][condition['target']]
+          user_attributes = user[:attributes][condition['target']]
           # convert to array to work with test
-          Array(user_values).any? do |value|
-            Conditions.test condition['operator'], value, condition['values']
+          Array(user_attributes).any? do |attribute|
+            Conditions.test condition['operator'], attribute, condition['values']
           end
         end
       end
