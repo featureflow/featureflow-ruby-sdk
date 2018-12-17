@@ -6,8 +6,8 @@ require 'featureflow/version'
 Gem::Specification.new do |spec|
   spec.name          = "featureflow"
   spec.version       = Featureflow::VERSION
-  spec.authors       = ["Henry Young"]
-  spec.email         = ["henry@featureflow.io"]
+  spec.authors       = ["Oliver Oldfield-Hodge"]
+  spec.email         = ["contact@featureflow.io"]
 
   spec.summary       = "Ruby SDK for Featureflow"
   spec.description   = "Connects your server with Featureflow. Create features at https://featureflow.io."

@@ -15,7 +15,7 @@ The easiest way to get started is to follow the [Featureflow quick start guides]
 
 ## Change Log
 
-Please see [CHANGELOG](https://github.com/featureflow/featureflow-node-sdk/blob/master/CHANGELOG.md).
+Please see [CHANGELOG](https://github.com/featureflow/featureflow-ruby-sdk/blob/master/CHANGELOG.md).
 
 ## Usage
 

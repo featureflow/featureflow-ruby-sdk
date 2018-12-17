@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    featureflow (0.5.1)
+    featureflow (0.6.0)
       excon (~> 0.57.0)
 
 GEM

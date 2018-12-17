@@ -1,4 +1,8 @@
 # Change log
+## [0.6.0] - 2018-12-17
+### Fixed 
+- Use User over Context matching all other SDKs
+- Use events.featureflow.io endpoint
 ## [0.5.1] - 2017-07-17
 ### Fixed 
 - Feature registration now compatible with Ruby 2.4
