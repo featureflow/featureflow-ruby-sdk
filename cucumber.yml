@@ -1,2 +1,2 @@
-default: --tags 'not @integration'
+default: -r features/step_definitions -r features/support --tags 'not @integration and not @builder-injects-implicit-attributes and not @json-value' testbed/gherkin
 integration: --tags @integration
