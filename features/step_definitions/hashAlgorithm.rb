@@ -1,9 +1,9 @@
 require 'featureflow/evaluate_helpers'
 
-Given(/^the salt is "([^"]*)", the feature is "([^"]*)" and the key is "([^"]*)"$/) do |salt, feature, key|
+Given(/^the salt is "([^"]*)", the feature is "([^"]*)" and the id is "([^"]*)"$/) do |salt, feature, id|
   @salt = salt
   @feature = feature
-  @key = key
+  @key = id
 end
 
 When(/^the variant value is calculated$/) do

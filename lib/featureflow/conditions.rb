@@ -1,5 +1,22 @@
+require 'time'
+
 module Featureflow
   class Conditions
+    # Mirrors the Node SDK's dateParse: dates compare by instant, not by string,
+    # so ISO values with different UTC offsets (e.g. "+04:00" vs "Z") compare correctly.
+    def self.to_epoch(value)
+      case value
+      when Time then value.to_f
+      when Numeric then value.to_f
+      when String
+        begin
+          Time.parse(value).to_f
+        rescue ArgumentError, TypeError
+          nil
+        end
+      end
+    end
+
     def self.test(op, a, b)
       case op
       when 'equals'
@@ -25,9 +42,13 @@ module Featureflow
       when 'lessThanOrEqual'
         a <= b[0]
       when 'before'
-        a < b[0]
+        a_time = to_epoch(a)
+        b_time = to_epoch(b[0])
+        !!(a_time && b_time && a_time < b_time)
       when 'after'
-        a > b[0]
+        a_time = to_epoch(a)
+        b_time = to_epoch(b[0])
+        !!(a_time && b_time && a_time > b_time)
       else
         false
       end

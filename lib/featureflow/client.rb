@@ -1,3 +1,4 @@
+require 'time'
 require 'featureflow/evaluate'
 require 'featureflow/polling_client'
 require 'featureflow/events_client'
@@ -61,7 +62,16 @@ module Featureflow
       user = UserBuilder.new(user).build if user.is_a?(String)
 
       user = user.dup
-      user[:attributes] = user[:attributes].merge('featureflow.user.id' => user[:id])
+      # Implicit attributes injected at evaluation time (matching the Node SDK's
+      # EvaluateHelpers): featureflow.date/hourofday let rules target the current
+      # moment; sdk-server's partial evaluation defers these to the JS client, but
+      # server SDKs evaluate them locally against "now".
+      now = Time.now
+      user[:attributes] = user[:attributes].merge(
+        'featureflow.user.id' => user[:id],
+        'featureflow.date' => now.utc.iso8601,
+        'featureflow.hourofday' => now.hour
+      )
 
       Evaluate.new(
         feature_key: key,

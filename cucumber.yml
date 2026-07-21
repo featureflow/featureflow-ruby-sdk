@@ -1,0 +1,2 @@
+default: --tags 'not @integration'
+integration: --tags @integration

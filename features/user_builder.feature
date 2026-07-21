@@ -17,8 +17,13 @@ Feature: UserBuilder
     Then the result user should have an id "user"
     And the result user should have a attribute with key "age" and value "21"
     And the result user should have a attribute with key "type" and value "beta"
-    And the result user should have a attribute with key "featureflow.user.id" and value "user"
-    And the result user should have a attribute with key "featureflow.date" and current datetime in iso8601
+    # Note: the builder does not inject implicit attributes. "featureflow.user.id",
+    # "featureflow.date" and "featureflow.hourofday" are merged in by Client#evaluate
+    # at evaluation time, so date/hour rules match the moment of evaluation rather
+    # than when the user object was built. (Partial evaluation — *deferring* these
+    # conditions to the client — is sdk-server-only for the JS client SDKs.)
+    And the result user should not have a attribute with key "featureflow.user.id"
+    And the result user should not have a attribute with key "featureflow.date"
 
   Scenario: Test the User Builder throws an error when no key is provided
     Given there is access to the User Builder module

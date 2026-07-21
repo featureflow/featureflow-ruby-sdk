@@ -5,7 +5,7 @@ Given(/^the target is a "([^"]*)" with the value of "([^"]*)"$/) do |type, targe
   @target = type == 'number' ? Float(target) : target
 end
 
-Given(/^the value is a "([^"]*)" with the value of "([^"]*)"$/) do |type, value|
+Given(/^the attribute is a "([^"]*)" with the value of "([^"]*)"$/) do |type, value|
   @result = nil
   @value = type == 'number' ? Float(value) : value
   @value = [@value]
@@ -19,6 +19,6 @@ Then(/^the output should equal "([^"]*)"$/) do |result|
   expect(@result.to_s).to eq(result.to_s)
 end
 
-Given(/^the value is an array of values "([^"]*)"$/) do |values|
+Given(/^the attribute is an array of values "([^"]*)"$/) do |values|
   @value = values.split(', ')
 end

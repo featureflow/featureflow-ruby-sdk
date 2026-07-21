@@ -8,24 +8,24 @@ Before do
     'defaultRule' => false,
     'variantSplits' => []
   }
-  @context_builder = Featureflow::ContextBuilder.new('anonymous')
+  @user_builder = Featureflow::UserBuilder.new('anonymous')
 end
 
 Given(/^the rule is a default rule$/) do
   @rule['defaultRule'] = true
 end
 
-When(/^the rule is matched against the context$/) do
-  @result = Featureflow::EvaluateHelpers.rule_matches(@rule, @context_builder.build)
+When(/^the rule is matched against the user$/) do
+  @result = Featureflow::EvaluateHelpers.rule_matches(@rule, @user_builder.build)
 end
 
 Then(/^the result from the match should be (true|false)$/) do |value|
   expect(@result.to_s).to eq(value)
 end
 
-Given(/^the context values are$/) do |context_values|
-  context_values.hashes.each do |row|
-    @context_builder.with_values row['key'] => JSON.parse(row['value'])
+Given(/^the user attributes are$/) do |user_attributes|
+  user_attributes.hashes.each do |row|
+    @user_builder.with_attributes row['key'] => JSON.parse(row['value'])
   end
 end
 
@@ -65,6 +65,6 @@ When(/^the variant split key is calculated$/) do
   )
 end
 
-Then(/^the resulting variant should be "([^']*)"$/) do |result|
+Then(/^the resulting variant should be "([^"]*)"$/) do |result|
   expect(@result.to_s).to eq(result.to_s)
 end

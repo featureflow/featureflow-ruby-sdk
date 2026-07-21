@@ -182,3 +182,13 @@ rvm use --default 2.5.1
 bundle install
 ruby test.rb
 ```
+
+## Manual test harness (example server)
+
+To try the SDK against a real Featureflow environment without writing any code, run the small local harness in [examples/harness](examples/harness):
+
+```
+FEATUREFLOW_SERVER_KEY=srv-env-<your_key> bundle exec ruby examples/harness/server.rb
+```
+
+Then open `http://127.0.0.1:3456/` to evaluate features in the browser, or hit `GET /api/evaluate?feature=<key>&userId=<id>` directly. See [examples/harness/README.md](examples/harness/README.md) for all endpoints and environment variables (including pointing at staging via `FEATUREFLOW_BASE_URL`).

@@ -9,12 +9,12 @@ module Featureflow
 
     def with_attributes(hash)
       raise ArgumentError, 'Parameter hash must be a Hash' unless hash.is_a?(Hash)
-      hash = hash.dup
+      normalized = {}
       hash.each do |k, v|
-        raise ArgumentError, "Value for #{k} must be a valid 'primitive' JSON datatype" unless valid_value?(v)
-        hash[k.to_s] = h.delete(k) unless k.is_a?(String)
+        raise ArgumentError, "Value for #{k} must be a valid 'primitive' JSON datatype" unless valid_attribute?(v)
+        normalized[k.to_s] = v
       end
-      @attributes = @attributes.merge(hash)
+      @attributes = @attributes.merge(normalized)
       self
     end
 

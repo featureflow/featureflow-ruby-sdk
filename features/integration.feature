@@ -1,8 +1,17 @@
+# Excluded from `bundle exec rake` / the default cucumber profile (see cucumber.yml).
+# Requires FEATUREFLOW_TEST_API_KEY (and optionally FEATUREFLOW_TEST_BASE_URL) to
+# point at an environment with a "test-integration" feature matching the Examples
+# below.
+#
+# NOTE: the "throw an error" scenarios currently cannot pass against the real
+# Client/PollingClient: PollingClient#load_features rescues every error internally
+# and only logs it, so an invalid or missing key never raises synchronously from
+# Client.new. Left in place as the intended contract for whenever that's fixed.
 @integration
 Feature: Integration
   Scenario Outline: Test that we can instantiate the client
     Given there is access to the Featureflow library
-    And the FeatureflowClient is initialized with the apiKey "srv-env-9b5fff890c724d119a334a64ed4d2eb2"
+    And the FeatureflowClient is initialized with the configured apiKey
     When the feature "<feature>" with user id "<id>" is evaluated with the value "<value>"
     Then the result of the evaluation should equal <result>
     Examples:

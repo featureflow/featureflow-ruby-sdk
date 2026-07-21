@@ -48,7 +48,7 @@ module Featureflow
 
       @feature['rules'].each do |rule|
         next unless EvaluateHelpers.rule_matches(rule, @user)
-        hash = EvaluateHelpers.calculate_hash(@salt, @feature['key'], @user['id'])
+        hash = EvaluateHelpers.calculate_hash(@salt, @feature['key'], @user[:id])
         variant_value = EvaluateHelpers.get_variant_value(hash)
         return EvaluateHelpers.get_variant_split_key(rule['variantSplits'], variant_value)
       end

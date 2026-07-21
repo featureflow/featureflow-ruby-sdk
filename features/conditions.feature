@@ -109,3 +109,11 @@ Feature: Conditions
       | after              | 2017-03-09T02:39:46.182Z | 2017-04-09T02:39:46.182Z | false  |
       | after              | 2017-03-09T02:39:46.182Z | 2017-02-09T02:39:46.182Z | true   |
       | after              | 2017-03-09T02:39:46.182Z | 2017-03-09T02:39:46.182Z | false  |
+
+      # Offsets must compare by instant, not lexicographically:
+      # 02:00-05:00 is 07:00Z, which is after 06:00Z even though "02..." < "06..." as strings
+      | after              | 2026-07-21T02:00:00-05:00 | 2026-07-21T06:00:00Z    | true   |
+      # 23:00+10:00 is 13:00Z, which is before 14:00Z even though "23..." > "14..." as strings
+      | before             | 2026-07-21T23:00:00+10:00 | 2026-07-21T14:00:00Z    | true   |
+      | after              | not-a-date               | 2026-07-21T06:00:00Z     | false  |
+      | before             | not-a-date               | 2026-07-21T06:00:00Z     | false  |
