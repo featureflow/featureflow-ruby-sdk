@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     featureflow (0.6.0)
-      excon (~> 0.57.0)
+      excon (~> 1.5)
 
 GEM
   remote: https://rubygems.org/
@@ -41,7 +41,8 @@ GEM
       reline (>= 0.3.8)
     diff-lcs (1.6.2)
     erb (6.0.1.1)
-    excon (0.57.1)
+    excon (1.6.0)
+      logger
     ffi (1.17.4)
     ffi (1.17.4-aarch64-linux-gnu)
     ffi (1.17.4-aarch64-linux-musl)
@@ -133,7 +134,7 @@ CHECKSUMS
   debug (1.11.1) sha256=2e0b0ac6119f2207a6f8ac7d4a73ca8eb4e440f64da0a3136c30343146e952b6
   diff-lcs (1.6.2) sha256=9ae0d2cba7d4df3075fe8cd8602a8604993efc0dfa934cff568969efb1909962
   erb (6.0.1.1) sha256=ce5357460652a9a94667c5769eaffc551eea2b14a8531ac7c7b1d77b860758b9
-  excon (0.57.1) sha256=8fa91bbc73ff652caa28c9d52e3cd157514135ec41ecf1738514c98ce7a182cd
+  excon (1.6.0) sha256=ebe2ab83c055ef8e117c62c91a3535b966a59a64868188219d49ab90cd83b65f
   featureflow (0.6.0)
   ffi (1.17.4) sha256=bcd1642e06f0d16fc9e09ac6d49c3a7298b9789bcb58127302f934e437d60acf
   ffi (1.17.4-aarch64-linux-gnu) sha256=b208f06f91ffd8f5e1193da3cae3d2ccfc27fc36fba577baf698d26d91c080df

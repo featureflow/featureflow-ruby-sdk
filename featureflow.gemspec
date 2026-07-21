@@ -35,5 +35,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "cucumber", "~> 11.0"
   spec.add_development_dependency "webrick", "~> 1.8"
   spec.add_development_dependency "debug", "~> 1.9"
-  spec.add_dependency "excon", "~> 0.57.0"
+  spec.add_dependency "excon", "~> 1.5"
 end
