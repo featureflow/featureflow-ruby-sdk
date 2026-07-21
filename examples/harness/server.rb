@@ -14,6 +14,18 @@ require 'featureflow'
 require 'webrick'
 require 'json'
 
+# Load repo-root .env (see .env.example) without overriding vars already set in the shell.
+env_file = File.expand_path('../../.env', __dir__)
+if File.exist?(env_file)
+  File.readlines(env_file).each do |line|
+    line = line.strip
+    next if line.empty? || line.start_with?('#')
+    key, value = line.split('=', 2)
+    next unless key && value
+    ENV[key] ||= value.strip
+  end
+end
+
 api_key = ENV['FEATUREFLOW_SERVER_KEY'].to_s.strip
 if api_key.empty?
   warn "Set FEATUREFLOW_SERVER_KEY to your Featureflow server API key.\n" \

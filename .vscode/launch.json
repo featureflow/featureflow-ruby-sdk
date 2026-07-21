@@ -1,0 +1,32 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "rdbg",
+      "name": "Harness: example server",
+      "request": "launch",
+      "script": "${workspaceFolder}/examples/harness/server.rb",
+      "cwd": "${workspaceFolder}",
+      "useBundler": true,
+      "askParameters": false
+    },
+    {
+      "type": "rdbg",
+      "name": "Cucumber: all (not @integration)",
+      "request": "launch",
+      "command": "bundle exec cucumber",
+      "script": "--tags 'not @integration'",
+      "cwd": "${workspaceFolder}",
+      "askParameters": false
+    },
+    {
+      "type": "rdbg",
+      "name": "Cucumber: current feature file",
+      "request": "launch",
+      "command": "bundle exec cucumber",
+      "script": "${file}",
+      "cwd": "${workspaceFolder}",
+      "askParameters": false
+    }
+  ]
+}
