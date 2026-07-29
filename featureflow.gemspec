@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.summary       = "Ruby SDK for Featureflow"
   spec.description   = "Connects your server with Featureflow. Create features at https://featureflow.io."
   spec.homepage      = "https://github.com/featureflow/featureflow-ruby-sdk"
-  spec.license       = "MIT"
+  spec.license       = "Apache-2.0"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.

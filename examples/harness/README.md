@@ -3,10 +3,10 @@
 Small WEBrick app in `server.rb` that uses the SDK straight from `../../lib` (no build step -- Ruby doesn't need one).
 
 ```bash
-FEATUREFLOW_SERVER_KEY=srv-env-<your_key> bundle exec ruby examples/harness/server.rb
+FEATUREFLOW_SERVER_KEY=sdk-srv-env-<your_key> bundle exec ruby examples/harness/server.rb
 
 # Staging (or any custom app host)
-FEATUREFLOW_BASE_URL=https://beta.featureflow-staging.com FEATUREFLOW_SERVER_KEY=srv-env-<your_key> bundle exec ruby examples/harness/server.rb
+FEATUREFLOW_BASE_URL=https://beta.featureflow-staging.com FEATUREFLOW_SERVER_KEY=sdk-srv-env-<your_key> bundle exec ruby examples/harness/server.rb
 ```
 
 Defaults to `http://127.0.0.1:3456/` (override with `PORT`). The home page can trigger evaluations in the browser; JSON endpoints:
@@ -17,7 +17,7 @@ Defaults to `http://127.0.0.1:3456/` (override with `PORT`). The home page can t
 
 Env vars:
 
-- `FEATUREFLOW_SERVER_KEY` (required) -- your environment's server API key (`srv-env-...`)
+- `FEATUREFLOW_SERVER_KEY` (required) -- your environment's server API key (`sdk-srv-env-...`)
 - `FEATUREFLOW_BASE_URL` (optional) -- override the features endpoint, e.g. for staging
 - `FEATUREFLOW_EVENTS_URL` (optional) -- override the events endpoint
 - `FEATUREFLOW_DISABLE_EVENTS` (optional) -- the harness disables the events client by default (no calls to the events API); set to `false` to send evaluation events like a full production client

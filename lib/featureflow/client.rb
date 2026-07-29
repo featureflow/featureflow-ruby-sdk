@@ -6,7 +6,7 @@ require 'featureflow/events_client'
 module Featureflow
   class Client
     def initialize(configuration = nil)
-      @configuration = configuration || Featureflow.configuration
+      @configuration = build_configuration(configuration)
       @configuration.validate!
       @features = {}
 
@@ -81,6 +81,27 @@ module Featureflow
         salt: '1',
         events_client: @events_client
       )
+    end
+
+    # Accepts either a Featureflow::Configuration, or a Hash of configuration
+    # options — `Featureflow::Client.new(api_key: '...')` is the form the README
+    # leads with and the natural Ruby idiom. Passing nothing keeps using the
+    # process-wide Featureflow.configuration (which reads FEATUREFLOW_SERVER_KEY).
+    private def build_configuration(configuration)
+      return Featureflow.configuration if configuration.nil?
+      return configuration unless configuration.is_a?(Hash)
+
+      config = Configuration.new
+      configuration.each do |option, value|
+        setter = "#{option}="
+        # Fail loudly rather than silently dropping a mistyped option — a
+        # misspelt `endpoint:` would otherwise quietly poll production.
+        unless config.respond_to?(setter)
+          raise ArgumentError, "Unknown Featureflow configuration option: #{option}"
+        end
+        config.public_send(setter, value)
+      end
+      config
     end
   end
 end

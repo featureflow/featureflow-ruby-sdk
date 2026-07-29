@@ -7,7 +7,7 @@ RSpec::Core::RakeTask.new(:spec)
 Cucumber::Rake::Task.new(:cucumber) do |t|
   t.cucumber_opts = "-r features/step_definitions -r features/support " \
     "--tags 'not @integration and not @builder-injects-implicit-attributes and not @json-value' " \
-    "testbed/gherkin"
+    "testbed/gherkin features"
 end
 
 task :default => :cucumber

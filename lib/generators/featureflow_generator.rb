@@ -9,7 +9,7 @@ class FeatureflowGenerator < Rails::Generators::Base
   desc "Configures the featureflow with your API key"
 
   def create_initializer_file
-    unless /^srv-env-[a-f0-9]{32}$/ =~ api_key
+    unless /^sdk-srv-env-[a-f0-9]{32}$/ =~ api_key
       raise Thor::Error, "Invalid featureflow environment api key #{api_key.inspect}\nYou can find your environment api key on your featureflow dashboard at https://[APP-NAME].featureflow.io/"
     end
 

@@ -3,8 +3,8 @@
 
 # Local harness: WEBrick app using the SDK straight from ../../lib
 #
-#   FEATUREFLOW_SERVER_KEY=srv-env-xxxxxxxxx ruby examples/harness/server.rb
-#   FEATUREFLOW_BASE_URL=https://beta.featureflow-staging.com FEATUREFLOW_SERVER_KEY=srv-env-xxxxxxxxx ruby examples/harness/server.rb
+#   FEATUREFLOW_SERVER_KEY=sdk-srv-env-xxxxxxxxx ruby examples/harness/server.rb
+#   FEATUREFLOW_BASE_URL=https://beta.featureflow-staging.com FEATUREFLOW_SERVER_KEY=sdk-srv-env-xxxxxxxxx ruby examples/harness/server.rb
 #
 # Open http://127.0.0.1:3456/ -- or use the JSON API below.
 
@@ -30,7 +30,7 @@ api_key = ENV['FEATUREFLOW_SERVER_KEY'].to_s.strip
 if api_key.empty?
   warn "Set FEATUREFLOW_SERVER_KEY to your Featureflow server API key.\n" \
        "Example:\n" \
-       "  FEATUREFLOW_SERVER_KEY=srv-env-xxxxxxxxx ruby examples/harness/server.rb\n"
+       "  FEATUREFLOW_SERVER_KEY=sdk-srv-env-xxxxxxxxx ruby examples/harness/server.rb\n"
   exit 1
 end
 

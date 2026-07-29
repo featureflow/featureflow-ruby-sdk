@@ -19,16 +19,18 @@ bundle exec cucumber features/rules.feature:12  # run a single scenario by line
 
 bundle exec cucumber --profile integration  # @integration-tagged scenarios (see below)
 
-FEATUREFLOW_SERVER_KEY=srv-env-<key> bundle exec ruby examples/harness/server.rb  # manual local harness, see examples/harness/README.md
+FEATUREFLOW_SERVER_KEY=sdk-srv-env-<key> bundle exec ruby examples/harness/server.rb  # manual local harness, see examples/harness/README.md
 ```
 
 There are no unit tests under `spec/`; all behavioral testing is Cucumber features under `features/`. `rake spec` is wired up but currently has nothing to execute.
+
+The default profile runs two sets of `.feature` files: `testbed/gherkin` (the shared `featureflow-sdk-testbed` submodule — cross-SDK scenarios, don't edit them here) and `features/` (Ruby-specific scenarios: `ruby_client.feature` covers the constructor forms and the Rails controller helper, `date_conditions.feature` covers timezone handling in `before`/`after`). Step definitions for both live in `features/step_definitions/`.
 
 ### Integration tests
 
 `features/integration.feature` is tagged `@integration` and excluded from the default profile (`cucumber.yml`: `default: --tags 'not @integration'`). It drives a real `Featureflow::Client` against a live backend and requires:
 
-- `FEATUREFLOW_TEST_API_KEY` — a real server SDK key (`srv-env-...`) for an environment with a `test-integration` feature matching the Examples table in that feature file
+- `FEATUREFLOW_TEST_API_KEY` — a real server SDK key (`sdk-srv-env-...`) for an environment with a `test-integration` feature matching the Examples table in that feature file
 - `FEATUREFLOW_TEST_BASE_URL` (optional) — override the endpoint (e.g. to point at a local `event-server`/`sdk-server` instead of production)
 
 Run with `bundle exec cucumber --profile integration`. One scenario group ("throw an error when the wrong/no key is used") is currently unreachable/documented-as-broken: `PollingClient#load_features` rescues all errors internally and only logs them, so a bad or missing key never raises synchronously from `Client.new` — see the comment block at the top of `features/integration.feature`.
@@ -55,7 +57,7 @@ Everything is wired through `lib/featureflow.rb`, which holds process-wide singl
 
 **Events** (`EventsClient`, [lib/featureflow/events_client.rb](lib/featureflow/events_client.rb)): fire-and-forget. Feature registration (`register_features`) is sent immediately on its own `Thread`. Evaluation events are pushed onto an in-process `Queue` and flushed by a background scheduler thread every 10s (or immediately if the queue reaches 10,000), POSTed as a batch to `/api/sdk/v1/events`; feature registration goes to `/api/sdk/v1/register`. All HTTP is via `excon`; failures are logged, never raised.
 
-**Rails integration** (`lib/featureflow/rails/`, `lib/generators/featureflow_generator.rb`): a Railtie autoloads when `Rails` is defined; the generator (`rails generate featureflow <api_key>`) validates the key format (`srv-env-[a-f0-9]{32}`) and writes a `config/initializers/featureflow.rb` calling `Featureflow.configure`.
+**Rails integration** (`lib/featureflow/rails/`, `lib/generators/featureflow_generator.rb`): a Railtie autoloads when `Rails` is defined; the generator (`rails generate featureflow <api_key>`) validates the key format (`sdk-srv-env-[a-f0-9]{32}`) and writes a `config/initializers/featureflow.rb` calling `Featureflow.configure`.
 
 ## Working in this repo
 
