@@ -1,2 +1,7 @@
-default: -r features/step_definitions -r features/support --tags 'not @integration and not @builder-injects-implicit-attributes and not @json-value' testbed/gherkin features
-integration: --tags @integration
+# --strict-undefined / --strict-pending: without them cucumber prints "N undefined" and
+# still exits zero, so a step renamed in the testbed submodule silently stops being
+# tested -- which is how 69 of the Go SDK's 93 scenarios came to be skipped while its
+# suite stayed green. Keep these on both profiles and in the Rakefile.
+# (--strict-flaky is deliberately not included: there are no retries configured here.)
+default: -r features/step_definitions -r features/support --strict-undefined --strict-pending --tags 'not @integration and not @builder-injects-implicit-attributes and not @json-value' testbed/gherkin features
+integration: --strict-undefined --strict-pending --tags @integration
