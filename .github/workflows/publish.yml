@@ -1,0 +1,48 @@
+name: Publish to RubyGems
+
+# Publishes via RubyGems trusted publishing (OIDC — no API key stored anywhere).
+# Release flow, mirroring featureflow-python-sdk:
+#   1. bump Featureflow::VERSION in lib/featureflow/version.rb
+#   2. publish a GitHub release with the matching tag, e.g. v0.7.0
+# The trusted-publisher entry on rubygems.org must name this repo, this file,
+# and the "rubygems" environment.
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+      - run: bundle exec rake
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    environment: rubygems
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+      - name: Check version matches release tag
+        run: |
+          VERSION=$(ruby -r ./lib/featureflow/version -e 'puts Featureflow::VERSION')
+          TAG="${GITHUB_REF_NAME#v}"
+          if [ "$VERSION" != "$TAG" ]; then
+            echo "Gem version $VERSION does not match release tag $GITHUB_REF_NAME" >&2
+            exit 1
+          fi
+      - uses: rubygems/release-gem@v1
