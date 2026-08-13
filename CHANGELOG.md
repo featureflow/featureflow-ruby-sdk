@@ -1,5 +1,5 @@
 # Change log
-## [Unreleased]
+## [0.8.0] - 2026-08-13
 ### Added
 - `application` configuration option (falling back to the `FEATUREFLOW_APPLICATION`
   environment variable): names this workload, sent as `X-Featureflow-Application` on
