@@ -28,6 +28,15 @@ Feature: Ruby client construction and the Rails helper
     When a client is created with an unknown configuration option
     Then the featureflow client should throw an error
 
+  # The shared scenarios for the application tag itself are in
+  # testbed/gherkin/application_tag.feature; the environment-variable fallback is
+  # Ruby-specific configuration surface, so it lives here.
+  Scenario: The application tag falls back to the FEATUREFLOW_APPLICATION environment variable
+    Given a features endpoint capturing request headers
+    And the environment variable FEATUREFLOW_APPLICATION is set to "env-app"
+    When a client is initialised against it with no application
+    Then the captured features request has X-Featureflow-Application "env-app"
+
   Scenario: The Rails helper evaluates a feature for a plain user id
     Given the featureflow client is configured against an unreachable endpoint
     And a rails request from ip "10.0.0.1" with url "http://example.com/home"

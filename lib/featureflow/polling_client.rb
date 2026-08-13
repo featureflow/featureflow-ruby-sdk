@@ -5,7 +5,8 @@ module Featureflow
   class PollingClient
     DEFAULT_OPTIONS = {
       poll_interval: 30,
-      timeout: 30
+      timeout: 30,
+      application: nil
     }.freeze
     LOCK = Mutex.new
 
@@ -35,12 +36,16 @@ module Featureflow
     end
 
     def load_features
-      response = Excon.get(@url +  + '/api/sdk/v1/features', headers: {
+      headers = {
         'Authorization' => "Bearer #{@api_key}",
         'Accept' => 'Application/Json',
         'If-None-Match' => @etag,
         'X-Featureflow-Client' => 'RubyClient/' + Featureflow::VERSION
-      }, omit_default_port: true, read_timeout: @options[:timeout])
+      }
+      # Write-only telemetry: never affects the response, so it cannot fragment the CDN cache.
+      headers['X-Featureflow-Application'] = @options[:application] if @options[:application]
+      response = Excon.get(@url +  + '/api/sdk/v1/features', headers: headers,
+                           omit_default_port: true, read_timeout: @options[:timeout])
 
       if response.status == 200
         Featureflow.logger.debug "updating features"

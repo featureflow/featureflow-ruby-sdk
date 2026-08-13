@@ -1,4 +1,12 @@
 # Change log
+## [Unreleased]
+### Added
+- `application` configuration option (falling back to the `FEATUREFLOW_APPLICATION`
+  environment variable): names this workload, sent as `X-Featureflow-Application` on
+  every request so the dashboard can attribute usage and flag evaluations per
+  application. Slug-validated client-side (case forgiven; an invalid value is dropped
+  with a warning and no header is sent).
+
 ## [0.7.0] - 2026-08-11
 ### Fixed
 - Condition operators fail closed instead of raising into the host application: an

@@ -153,6 +153,22 @@ featureflow.evaluate('key-three', user).is? 'custom' # == true
 
 ```
 
+#### Naming your application
+
+Optionally tag this workload with an application name so the Featureflow dashboard can
+attribute SDK usage and flag evaluations to it (Admin → SDKs, and the "Evaluated by"
+panel on each feature's statistics tab):
+
+```ruby
+featureflow = Featureflow::Client.new(api_key: FEATUREFLOW_SERVER_KEY,
+                                      application: 'checkout-api')
+```
+
+The name is a slug — lowercase letters, numbers, `.`, `_` and `-`, at most 64
+characters. An invalid value is dropped with a warning and no tag is sent. The
+`FEATUREFLOW_APPLICATION` environment variable is used when the option is not set in
+code.
+
 #### Further documentation
 Further documentation can be found [here](http://docs.featureflow.io/docs)
 

@@ -7,9 +7,11 @@ module Featureflow
   #LOCK = Mutex.new
 
   class EventsClient
-    def initialize(url, api_key)
+    def initialize(url, api_key, application = nil)
       @url = url
       @api_key = api_key
+      # Already sanitised by the Client (see lib/featureflow/application.rb).
+      @application = application
       @eventsQueue = Queue.new
       @scheduler = start_scheduler
     end
@@ -104,15 +106,17 @@ module Featureflow
 =end
 
     private def send_event(event_name, method, path, body)
+      headers = {
+        'Authorization' => "Bearer #{@api_key}",
+        'Content-Type' => 'application/json;charset=UTF-8',
+        'Accept' => 'Application/Json',
+        'X-Featureflow-Client' => 'RubyClient/' + Featureflow::VERSION
+      }
+      headers['X-Featureflow-Application'] = @application if @application
       connection = Excon.new(@url)
       response = connection.request(method: method,
                                     path: path,
-                                    headers: {
-                                        'Authorization' => "Bearer #{@api_key}",
-                                        'Content-Type' => 'application/json;charset=UTF-8',
-                                        'Accept' => 'Application/Json',
-                                        'X-Featureflow-Client' => 'RubyClient/' + Featureflow::VERSION
-                                    },
+                                    headers: headers,
                                     omit_default_port: true,
                                     body: JSON.generate(body))
       if response.status >= 400

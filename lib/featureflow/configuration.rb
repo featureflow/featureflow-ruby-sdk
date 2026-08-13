@@ -5,12 +5,16 @@ class Featureflow::Configuration
   attr_accessor :disable_events
   attr_accessor :with_features
   attr_accessor :logger
+  # Optional workload name for per-application usage attribution in the dashboard;
+  # sent as X-Featureflow-Application on every request. See Featureflow::Application.
+  attr_accessor :application
   
   DEFAULT_ENDPOINT = 'https://app.featureflow.io'
   DEFAULT_EVENT_ENDPOINT = 'https://events.featureflow.io'
 
   def initialize
     self.api_key = ENV["FEATUREFLOW_SERVER_KEY"]
+    self.application = ENV["FEATUREFLOW_APPLICATION"]
     self.endpoint = DEFAULT_ENDPOINT
     self.event_endpoint = DEFAULT_EVENT_ENDPOINT
     self.disable_events = false

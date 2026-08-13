@@ -1,4 +1,5 @@
 require 'time'
+require 'featureflow/application'
 require 'featureflow/evaluate'
 require 'featureflow/polling_client'
 require 'featureflow/events_client'
@@ -10,6 +11,10 @@ module Featureflow
       @configuration.validate!
       @features = {}
 
+      # Optional workload name sent as X-Featureflow-Application on every request so
+      # usage and flag evaluations are attributable per application in the dashboard.
+      @application = Application.sanitise(@configuration.application)
+
       Featureflow.logger.info 'initializing client'
 
       @failover_variants = {}
@@ -20,7 +25,7 @@ module Featureflow
       end
 
       unless @configuration.disable_events
-        @events_client = EventsClient.new @configuration.event_endpoint, @configuration.api_key
+        @events_client = EventsClient.new @configuration.event_endpoint, @configuration.api_key, @application
         @events_client.register_features @configuration.with_features
       end
 
@@ -39,7 +44,8 @@ module Featureflow
         @configuration.endpoint,
         @configuration.api_key,
         poll_interval: 10,
-        timeout: 30
+        timeout: 30,
+        application: @application
       )
     end
 

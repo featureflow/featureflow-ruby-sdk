@@ -9,7 +9,7 @@
 # so the number below is expected to lag the real total. Raise it when the testbed
 # grows; never lower it to make a sudden drop go green without first working out where
 # the missing scenarios went.
-MIN_SCENARIOS = 132 # 139 run today
+MIN_SCENARIOS = 138 # 145 run today
 
 scenarios_run = 0
 

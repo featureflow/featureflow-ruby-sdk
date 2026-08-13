@@ -17,6 +17,7 @@ module TestbedManifest
   GHERKIN_DIR = 'testbed/gherkin'.freeze
 
   SUPPORTED = %w[
+    application_tag.feature
     bucketing.feature
     conditions.feature
     feature_evaluation.feature
